@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UrunListesi from "../../components/organism/UrunListesi";
 import { useEffect,useState } from "react";
 import { fetchUrunListele } from "../../store/features/urunSlice";
-import { sepeteEkle, sepettenÇıkart } from "../../store/features/sepetSlice";
+import { fetchSepeteEkle, sepeteEkle, sepettenÇıkart } from "../../store/features/sepetSlice";
 import { useNavigate } from "react-router-dom";
 
 
@@ -12,14 +12,18 @@ function Home(){
     const dispatch=useDispatch();
     const navigate= useNavigate();
     const urunList= useSelector((state) =>state.urun.urunList); //urunlistesini selector ile çekiyoruz, anasayfa global state içindeki urunlsitesini takibe alacakv e değiştiğinde kendisni render alacak
+    
 
     useEffect(()=>{
         dispatch(fetchUrunListele());
+        dispatch(fetchSepeteEkle());
     },[]); //bir cosntructor gibi kullanıyrouz sayfa açıdığında şunu yap diyoruz, şunu tetile diyoruz 
 
     const [isActive, setIsActive] =useState(false);
-    const sepetAdedi = useSelector((state) => state.urun.sepetAdedi);
-    const buttonClick= () => {
+    const sepetAdedi = useSelector((state) => state.sepetAdedi);
+    const userSepetAdedi = useSelector((state) => state.userSepetAdedi);
+
+    const sepeteGit= () => {
         navigate.call(null, '/sepet');
     }
     
@@ -32,9 +36,9 @@ function Home(){
               <div className="col-9"></div>
 
               <div className="col-3">
-                  <button onClick={buttonClick} type="button" class="btn btn-primary position-relative">
+                  <button onClick={sepeteGit} type="button" class="btn btn-primary position-relative">
                           <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {sepetAdedi}  
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {userSepetAdedi}  
                         <span class="visually-hidden">unread messages</span>
                         </span>
                   </button>

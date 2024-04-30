@@ -6,8 +6,8 @@ import urunUrl from "../../config/UrunController";
 const initUrunState ={
     urunList: [],
     isLoadingAdd: false,
-    isLoadingGetAll: false,
-    sepetAdedi:0 //3 ürün eklemek istediğimiz için bunu takip edeceğiz.
+    isLoadingGetAll: false
+   
 }
 
 export const fetchUrunEkleme = createAsyncThunk(
@@ -46,18 +46,7 @@ export const fetchUrunListele= createAsyncThunk(
 const urunSlice =createSlice({
     name: 'urun',
     initialState: initUrunState,
-    reducers: {
-        sepetAdediArttir(state, action) { //aşağıda bunları export ettik kullanabilmek için. bu kullanımlar redux kullanımı
-            if(state.sepetAdedi<3) //sepet adedi 3ten küçükse ürün ekle yoksa ekleme.
-               state.sepetAdedi = state.sepetAdedi + 1;
-        },
-
-        sepetAdediAzalt(state,action){
-            if(state.sepetAdedi>0) //sepetten ürün çıkartmak için kullanırız.
-              state.sepetAdedi = state.sepetAdedi - 1 ;
-        }
-
-    }, //urunlistin stateini setleyebilriz değer ata boşalt sıfırla gibi
+    reducers: {}, //urunlistin stateini setleyebilriz değer ata boşalt sıfırla gibi
     extraReducers: (build) => {
         build.addCase(fetchUrunEkleme.pending, (state) => {state.isLoadingAdd= true;});
         build.addCase(fetchUrunEkleme.fulfilled, (state,action) => {
@@ -82,6 +71,5 @@ const urunSlice =createSlice({
 
 });
 
-export const {sepetAdediArttir,sepetAdediAzalt} =urunSlice.actions;
 
 export default urunSlice.reducer;

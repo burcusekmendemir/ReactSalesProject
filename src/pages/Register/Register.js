@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import userController from '..//../config/UserController';
+import userController from '../../config/UserController';
 import './Register.css'
 
 function Register(){

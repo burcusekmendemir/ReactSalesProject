@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sepetAdediArttir, sepetAdediAzalt } from "../../store/features/urunSlice";
-import { sepeteEkle, sepettenCikart } from "../../store/features/sepetSlice";
+import { fetchSepeteEkle, sepeteEkle, sepettenCikart } from "../../store/features/sepetSlice";
 
 
 function UrunKarti(props){
     const dispatch=useDispatch(); //seeptadedi tetikleyecek
     const urun=props.urun; //dışarıdan porps ile urun veriyoruz. Bunu kullanarak resima ad vs yazacağız
     const [isActive, setIsActive] =useState(false);
-    const sepetAdedi =useSelector ((state) => state.urun.sepetAdedi); //sepetadedini takip edecek, 3 üzerindeyse artık eklee çıkartma yapamayız
+    const sepetAdedi =useSelector ((state) => state.sepet.sepetAdedi); //sepetadedini takip edecek, 3 üzerindeyse artık eklee çıkartma yapamayız
     const buttonClick = () => {
         if(isActive){ //true ise sepetten çıkart
-            dispatch(sepetAdediAzalt());
             dispatch(sepettenCikart(urun));
         }else{ //false ise sepete ekle
-            dispatch(sepetAdediArttir());
             dispatch(sepeteEkle(urun));
+            dispatch(fetchSepeteEkle({
+                userId: 1,
+                urunId: urun.id,
+                adet: 1,
+                fiyat: urun.fiyat
+            }));
         }
         setIsActive(!isActive); //eğer aktifse pasife, pasifse aktife geçir demek.
     }
